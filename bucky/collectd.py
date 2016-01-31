@@ -288,14 +288,18 @@ class CollectDCrypto(object):
             line = line.strip()
             if not line or line[0] == "#":
                 continue
-            user, passwd = line.split(":", 1)
+            try:
+                user, passwd = line.split(":", 1)
+            except ValueError:
+                log.error("Found malformed line '%s'.", line)
+                continue
             user = user.strip()
             passwd = passwd.strip()
             if not user or not passwd:
-                log.warning("Found line with missing user or password")
+                log.error("Found line with missing user or password")
                 continue
             if user in self.auth_db:
-                log.warning("Found multiple entries for single user")
+                log.error("Found multiple entries for single user")
             self.auth_db[user] = passwd
         f.close()
         log.info("Loaded collectd's auth file from %s", self.auth_file)
