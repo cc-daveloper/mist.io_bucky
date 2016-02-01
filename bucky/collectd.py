@@ -447,7 +447,7 @@ class CollectDHandler(object):
         try:
             data = self.crypto.parse(data)
         except ProtocolError as e:
-            log.error("Protocol error in CollectDCrypto: %s", e)
+            # log.error("Protocol error in CollectDCrypto: %s", e)
             return
         try:
             for sample in self.parser.parse(data):
